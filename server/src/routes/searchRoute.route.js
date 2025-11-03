@@ -1,6 +1,6 @@
 import express from 'express';
 import axios from 'axios';
-import searchModel from '../models/searchModel';
+import searchModel from '../models/searchModel.js';
 
 const searchRouter = express.Router();
 

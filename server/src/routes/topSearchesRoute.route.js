@@ -1,5 +1,5 @@
 import express from 'express';
-import searchModel from '../models/searchModel';
+import searchModel from '../models/searchModel.js';
 
 const topSearchesRouter = express.Router();
 
@@ -35,3 +35,4 @@ topSearchesRouter.get('/', async (req, res) => {
         res.status(500).json({ error: 'Erreur lors de la récupération des recherches populaires' });
     }
 });
+export default topSearchesRouter;
