@@ -20,9 +20,9 @@ authRouter.get(
 //Route pour la redirection après l'authentification via Google
 authRouter.get(
     "/google/callback",
-    passport.authenticate("google", { failureRedirect: "http://localhost:5175/login" }),
+    passport.authenticate("google", { failureRedirect: `${process.env.CLIENT_URL}/login` }),
     (req, res) => {
-        res.redirect("http://localhost:5175");
+        res.redirect(process.env.CLIENT_URL);
     }
 );
 
@@ -35,9 +35,9 @@ authRouter.get(
 //Route pour la redirection après l'authentification via GitHub
 authRouter.get(
     "/github/callback",
-    passport.authenticate("github", { failureRedirect: "http://localhost:5175/login" }),
+    passport.authenticate("github", { failureRedirect: `${process.env.CLIENT_URL}/login` }),
     (req, res) => {
-        res.redirect("http://localhost:5175");
+        res.redirect(process.env.CLIENT_URL);
     }
 );
 
@@ -50,24 +50,24 @@ authRouter.get(
 //Route pour la redirection après l'authentification via Facebook
 authRouter.get(
     "/facebook/callback",
-    passport.authenticate("facebook", { failureRedirect: "http://localhost:5175/login" }),
+    passport.authenticate("facebook", { failureRedirect: `${process.env.CLIENT_URL}/login` }),
     (req, res) => {
-        res.redirect("http://localhost:5175");
+        res.redirect(process.env.CLIENT_URL);
     }
 );
 
 //Route pour obtenir l'utilisateur acttuel
 authRouter.get("/user", isAuthenticated, (req, res) => {
     if (req.isAuthenticated()) {
-        res.json({ 
-            authenticated: true, 
+        res.json({
+            authenticated: true,
             user: {
                 _id: req.user._id,
                 displayName: req.user.displayName,
                 email: req.user.email
             }
         });
-    }else{
+    } else {
         res.json({ authenticated: false, user: null });
     }
 });

@@ -1,0 +1,107 @@
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.image-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+    background: white;
+}
+
+.image-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.image-card.selected {
+    border: 3px solid #667eea;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    /* Ratio 1:1 */
+    background: #f0f0f0;
+}
+
+.image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+}
+
+.image-checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.image-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.image-card:hover .image-info {
+    opacity: 1;
+}
+
+.image-author {
+    color: white;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.image-author a {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.image-author a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 1200px) {
+    .image-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .image-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .image-grid {
+        grid-template-columns: 1fr;
+    }
+}
