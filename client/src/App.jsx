@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     checkAuth();
-  }, );
+  }, []);
 
   const checkAuth = async () => {
     try {
@@ -35,7 +35,7 @@ function App() {
     }
   };
 
-    const handleLogout = async () => {
+  const handleLogout = async () => {
     try {
       await axios.post(`${apiUrl}/auth/logout`);
       setUser(null);

@@ -56,20 +56,16 @@ authRouter.get(
     }
 );
 
-//Route pour obtenir l'utilisateur acttuel
+//Route pour obtenir l'utilisateur actuel
 authRouter.get("/user", isAuthenticated, (req, res) => {
-    if (req.isAuthenticated()) {
-        res.json({
-            authenticated: true,
-            user: {
-                _id: req.user._id,
-                displayName: req.user.displayName,
-                email: req.user.email
-            }
-        });
-    } else {
-        res.json({ authenticated: false, user: null });
-    }
+    res.json({
+        authenticated: true,
+        user: {
+            _id: req.user._id,
+            displayName: req.user.displayName,
+            email: req.user.email
+        }
+    });
 });
 
 //Route pour la déconnexion

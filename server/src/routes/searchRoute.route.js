@@ -21,11 +21,14 @@ searchRouter.post('/', isAuthenticated, async (req, res) => {
             return res.status(400).json({ error: 'Le terme de recherche est requis.' });
         }
 
+        if (!process.env.UNSPLASH_ACCESS_KEY) {
+            return res.status(500).json({ error: 'Configuration API Unsplash manquante' });
+        }
+
         //Enregistrement de la recherche dans la base de données MongoDB
         const newSearch = new searchModel({
             term: term.trim().toLowerCase(),
-            UserId: req.user._id,
-            timestamp: new Date()
+            UserId: req.user._id
         });
         await newSearch.save();
 
@@ -41,7 +44,7 @@ searchRouter.post('/', isAuthenticated, async (req, res) => {
         const images = unsplashResponse.data.results.map(img => ({
             id: img.id,
             url: img.urls.small,
-            thumbail: img.urls.thumb,
+            thumbnail: img.urls.thumb,
             small: img.urls.small,
             description: img.description || img.alt_description || '',
             author: img.user.name,
@@ -55,8 +58,11 @@ searchRouter.post('/', isAuthenticated, async (req, res) => {
         });
     } catch (error) {
         console.error('Erreur lors de la recherche:', error);
-        if (error.response?.status === 401) {
-            return res.status(500).json({ error: 'Clé API Unsplash invalide' });
+        if (error.response?.status === 401 || error.response?.status === 403) {
+            return res.status(401).json({ error: 'Clé API Unsplash invalide ou expirée' });
+        }
+        if (error.response?.status === 429) {
+            return res.status(429).json({ error: 'Limite de requêtes API dépassée. Veuillez réessayer plus tard.' });
         }
         res.status(500).json({ error: 'Erreur lors de la recherche d\'images' });
     }

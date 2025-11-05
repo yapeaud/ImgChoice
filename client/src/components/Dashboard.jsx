@@ -48,7 +48,7 @@ const Dashboard = ({ user }) => {
         }
     };
 
-    // Fonction pour gérer la selection d'images
+    // Fonction pour gérer la sélection d'images
     const handleImageToggle = (imageId) => {
         const newSelected = new Set(selectedImages);
         if (newSelected.has(imageId)) {

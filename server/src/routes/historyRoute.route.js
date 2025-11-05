@@ -18,20 +18,22 @@ historyRouter.get("/", isAuthenticated, async (req, res) => {
         const history = await searchModel.find({ UserId: req.user._id })
             .sort({ createdAt: -1 })
             .limit(50)
-            .select('term timestamp')
+            .select('term createdAt')
             .lean();
 
         //Grouper par terme et garder le dernier timestamp
         const groupedHistory = history.reduce((acc, search) => {
             const existing = acc.find(item => item.term === search.term);
+            const searchTimestamp = search.createdAt;
             if (existing) {
-                if (new Date(search.timestamp) > new Date(existing.timestamp)) {
-                    existing.timestamp = search.timestamp;
+                const existingTimestamp = existing.timestamp;
+                if (new Date(searchTimestamp) > new Date(existingTimestamp)) {
+                    existing.timestamp = searchTimestamp;
                 }
             } else {
                 acc.push({
                     term: search.term,
-                    timestamp: search.timestamp
+                    timestamp: searchTimestamp
                 });
             }
             return acc;
@@ -40,7 +42,7 @@ historyRouter.get("/", isAuthenticated, async (req, res) => {
         res.status(200).json({
             success: true,
             history: groupedHistory
-        })
+        });
     } catch (error) {
         console.error('Erreur lors de la récupération de l\'historique:', error);
         res.status(500).json({ error: 'Erreur lors de la récupération de l\'historique' });
